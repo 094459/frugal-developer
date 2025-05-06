@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile - Insecure Messaging App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        textarea { width: 100%; padding: 8px; }
+        button { padding: 8px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        
+        <div class="nav">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('messages') }}">My Messages</a>
+            <a href="{{ url_for('user_profile') }}">Profile</a>
+            <a href="{{ url_for('admin') }}">Admin Panel</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <h2>Import Profile Data</h2>
+        <p>Paste your serialized profile data below:</p>
+        <form action="{{ url_for('user_profile') }}" method="post">
+            <div class="form-group">
+                <label for="user_data">Profile Data (Base64 encoded):</label>
+                <textarea id="user_data" name="user_data" rows="4"></textarea>
+            </div>
+            <button type="submit">Import Profile</button>
+        </form>
+        
+        {% if user_data %}
+            <h2>Profile Information</h2>
+            <pre>{{ user_data }}</pre>
+        {% endif %}
+    </div>
+</body>
+</html>

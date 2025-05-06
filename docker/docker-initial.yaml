@@ -1,0 +1,21 @@
+# Base Image (Generic, Heavy)
+FROM ubuntu:latest
+
+# Install dependencies (Each RUN creates a new layer)
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip
+
+# Copy all files (including unnecessary ones)
+COPY . /app
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies (No caching, slow)
+RUN pip3 install -r requirements.txt
+
+# Expose Port (Unnecessary in many cases)
+EXPOSE 8080
+
+# Run application (Hardcoded, no flexibility)
+CMD ["python3", "app.py"]

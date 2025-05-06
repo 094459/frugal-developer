@@ -1,0 +1,31 @@
+# Use a lightweight official Python image (Smaller & Secure)
+FROM python:3.11-slim as base
+
+# Set environment variables for efficiency
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONFAULTHANDLER=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100
+
+# Use a separate build stage to install dependencies (Reduces size)
+FROM base as builder
+WORKDIR /app
+COPY requirements.txt .  
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Final production image (Minimal size)
+FROM base
+WORKDIR /app
+
+# Copy only necessary files
+COPY --from=builder /root/.local /root/.local
+COPY . /app
+
+# Use a non-root user for security
+RUN useradd -m myuser && chown -R myuser /app
+USER myuser
+
+# Use a more flexible ENTRYPOINT
+ENTRYPOINT ["python3"]
+CMD ["app.py"]

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Messages - Insecure Messaging App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; }
+        .message { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+        .message-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .message-sender { font-weight: bold; }
+        .message-time { color: #666; }
+        .message-content { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Messages</h1>
+        
+        <div class="nav">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('messages') }}">My Messages</a>
+            <a href="{{ url_for('user_profile') }}">Profile</a>
+            <a href="{{ url_for('admin') }}">Admin Panel</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">
+                    <div class="message-header">
+                        <span class="message-sender">From: {{ message['sender'] }}</span>
+                        <span class="message-time">{{ message['timestamp'] }}</span>
+                    </div>
+                    <div class="message-content">
+                        <!-- BAD PRACTICE: Rendering unsanitized user input -->
+                        {{ message['message']|safe }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No messages found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
