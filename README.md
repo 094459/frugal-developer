@@ -2,6 +2,11 @@
 
 This repository contains examples of both inefficient and optimized code patterns to help developers build more cost-effective applications on AWS and other platforms. Each subdirectory contains examples that demonstrate how to optimize resource usage and reduce costs.
 
+> **WARNING!**
+>
+>Code in this repo is deliberately not optimised and you should NOT use it. It is intended to demonstrate how you can use Amazon Q Developer to help you refactor the code so that it is more effecient and reduce the cost of using AWS services used.
+
+
 ## Directory Structure
 
 ### api-calls-aws
